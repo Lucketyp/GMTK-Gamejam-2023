@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         Debug.Log(other.gameObject.layer);
         if(deadlyLayers == (deadlyLayers | (1 << other.gameObject.layer))){
-            //transform.position = initalPosition;
+            transform.position = initalPosition;
             Debug.Log("Dieded");
         }
     }

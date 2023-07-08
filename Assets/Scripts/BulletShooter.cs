@@ -7,11 +7,13 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject target;
     [SerializeField] LayerMask layerMask;
-    [SerializeField] Vector3 spawnOffset;
+    [SerializeField] Transform spawnOffset;
     [SerializeField] int maxFiredInRound;
-    [SerializeField] int maxSecondsBetweenRounds;
+    [SerializeField] float maxTimeBetweenRounds;
+    [SerializeField] float shootTimeInRound = 0.5f;
+    [SerializeField] float minDistanceForOffset = Mathf.Infinity;
+    float shootTime = 1f;
     float timer = 0f;
-    [SerializeField] float shootTime = 1f;
     int bulletsToFire = 1;
 
     void Start()
@@ -27,19 +29,19 @@ public class BulletShooter : MonoBehaviour
         {
             timer = 0f;
             Shoot();
-            shootTime = 0.5f;
+            shootTime = shootTimeInRound;
             bulletsToFire--;
 
             if(bulletsToFire == 0){
                 bulletsToFire = Random.Range(1, maxFiredInRound + 1);
-                shootTime = Random.Range(1, maxSecondsBetweenRounds + 1);
+                shootTime = Random.Range(0, 1000) / 1000 * (maxTimeBetweenRounds - 1) + 1;
             }
         }
     }
 
     bool CanSeeTarget() {
         RaycastHit hit;
-        Ray ray = new Ray(transform.position + transform.rotation * spawnOffset, transform.forward);
+        Ray ray = new Ray(spawnOffset.position, transform.forward);
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
             int layer = hit.collider.gameObject.layer;
             return target.layer == layer;
@@ -50,14 +52,19 @@ public class BulletShooter : MonoBehaviour
     }
 
     void RotateToTarget(){
-        Vector3 difference = target.transform.position - transform.position;
+        Vector3 difference = target.transform.position - spawnOffset.position;
         difference.y = 0;
         transform.rotation = Quaternion.FromToRotation(Vector3.forward, difference);
     }
 
     void Shoot()
     {
-        GameObject obj = Instantiate(bullet, transform.position + transform.rotation * spawnOffset, transform.rotation);
+        Vector3 spawnAt = spawnOffset.position;
+        Vector3 diff = target.transform.position - spawnOffset.position;
+        float distance = diff.magnitude;
+        if(distance > )
+
+        GameObject obj = Instantiate(bullet, spawnOffset.position, transform.rotation);
         obj.GetComponent<Bullet>().layerMask = layerMask;
         Destroy(obj, 15f);
     }
