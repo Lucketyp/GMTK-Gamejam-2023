@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] float speed = 20f;
+    public float speed = 20f;
     public LayerMask layerMask;
     BoxCollider boxCollider;
 
