@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         Vector3 currentVelocity = rb.velocity;
+        currentVelocity.y = 0;
         float currentSpeed = currentVelocity.magnitude;
         Vector3 currentDirection = Vector3.zero;
         if(currentSpeed > 0){
@@ -54,11 +55,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 turn = Vector3.Cross(Vector3.Cross(currentDirection, inputDirection), currentDirection) * turnAccelerationMultiplier;
 
         Vector3 finalAcceleration = accelerate + deccelerate + turn;
-
-        Vector3 newVelocity = currentVelocity + finalAcceleration * Time.fixedDeltaTime;
-
-        if(Vector3.Dot(currentVelocity, newVelocity) >= 0){
-            rb.velocity = newVelocity;
+        
+        if(Vector3.Dot(currentVelocity, currentVelocity + finalAcceleration * Time.fixedDeltaTime) >= 0){
+            rb.AddForce(finalAcceleration, ForceMode.Force);
         } else {
             rb.velocity = Vector3.zero;
         }

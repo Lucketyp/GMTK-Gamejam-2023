@@ -8,6 +8,8 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] GameObject target;
     [SerializeField] LayerMask layerMask;
     [SerializeField] Vector3 spawnOffset;
+    [SerializeField] int maxFiredInRound;
+    [SerializeField] int maxSecondsBetweenRounds;
     float timer = 0f;
     float shootTime = 1f;
     int bulletsToFire = 1;
@@ -29,8 +31,8 @@ public class BulletShooter : MonoBehaviour
             bulletsToFire--;
 
             if(bulletsToFire == 0){
-                bulletsToFire = Random.Range(1, 4);
-                shootTime = Random.Range(1, 6);
+                bulletsToFire = Random.Range(1, maxFiredInRound + 1);
+                shootTime = Random.Range(1, maxSecondsBetweenRounds + 1);
             }
         }
     }
@@ -40,7 +42,6 @@ public class BulletShooter : MonoBehaviour
         Ray ray = new Ray(transform.position + transform.rotation * spawnOffset, transform.forward);
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
             int layer = hit.collider.gameObject.layer;
-            Debug.Log(layer);
             return target.layer == layer;
         } else {
             return false;
