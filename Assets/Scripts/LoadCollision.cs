@@ -11,6 +11,7 @@ public class LoadCollision : MonoBehaviour
     void Start()
     {
         initalLayer = gameObject.layer;
+        gameObject.layer = (int)Mathf.Log(toLayer, 2);
     }
 
     void Update()
@@ -20,13 +21,13 @@ public class LoadCollision : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.layer == (int)Mathf.Log(inViewColliderLayer, 2)){
-            gameObject.layer = (int)Mathf.Log(toLayer, 2);
+            gameObject.layer = initalLayer;
         }
     }
 
     void OnTriggerExit(Collider other) {
         if(other.gameObject.layer == (int)Mathf.Log(inViewColliderLayer, 2)){
-            gameObject.layer = initalLayer;
+            gameObject.layer = (int)Mathf.Log(toLayer, 2);
         }
     }
 }
