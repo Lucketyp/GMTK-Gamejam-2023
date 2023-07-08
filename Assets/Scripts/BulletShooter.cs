@@ -10,8 +10,10 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] Transform spawnOffset;
     [SerializeField] int maxFiredInRound;
     [SerializeField] float maxTimeBetweenRounds;
+    [SerializeField] float minTimeBetweenRounds;
     [SerializeField] float shootTimeInRound = 0.5f;
     [SerializeField] float minDistanceForOffset = Mathf.Infinity;
+    [SerializeField] float bulletSpeed;
     float shootTime = 1f;
     float timer = 0f;
     int bulletsToFire = 1;
@@ -34,7 +36,7 @@ public class BulletShooter : MonoBehaviour
 
             if(bulletsToFire == 0){
                 bulletsToFire = Random.Range(1, maxFiredInRound + 1);
-                shootTime = Random.Range(0, 1000) / 1000 * (maxTimeBetweenRounds - 1) + 1;
+                shootTime = Random.Range(0, 1000) / 1000 * (maxTimeBetweenRounds - minTimeBetweenRounds) + minTimeBetweenRounds;
             }
         }
     }
@@ -68,6 +70,7 @@ public class BulletShooter : MonoBehaviour
 
         GameObject obj = Instantiate(bullet, spawnAt, transform.rotation);
         obj.GetComponent<Bullet>().layerMask = layerMask;
+        obj.GetComponent<Bullet>().speed = bulletSpeed;
         Destroy(obj, 15f);
     }
 }

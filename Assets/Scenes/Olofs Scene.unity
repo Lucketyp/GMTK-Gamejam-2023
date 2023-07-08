@@ -1511,10 +1511,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 119
   spawnOffset: {fileID: 727842336}
-  maxFiredInRound: 5
+  maxFiredInRound: 3
   maxTimeBetweenRounds: 5
+  minTimeBetweenRounds: 3
   shootTimeInRound: 0.3
   minDistanceForOffset: 70
+  bulletSpeed: 50
 --- !u!4 &633009034
 Transform:
   m_ObjectHideFlags: 0
