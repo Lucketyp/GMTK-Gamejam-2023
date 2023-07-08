@@ -26,8 +26,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 inputDirection = Vector3.zero;
-        inputDirection.x = Input.GetAxis("Horizontal");
-        inputDirection.z = Input.GetAxis("Vertical");
+        inputDirection.z = Input.GetAxis("Horizontal");
+        inputDirection.x = -Input.GetAxis("Vertical");
         inputDirection.Normalize();
 
         Vector3 currentVelocity = rb.velocity;
