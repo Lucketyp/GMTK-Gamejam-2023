@@ -5,8 +5,8 @@ using UnityEngine;
 public class BulletShooter : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
-    [SerializeField] Transform target;
-    [SerializeField] LayerMask targetLayers;
+    [SerializeField] GameObject target;
+    [SerializeField] LayerMask layerMask;
     [SerializeField] Vector3 spawnOffset;
     float timer = 0f;
     float shootTime = 1f;
@@ -17,7 +17,7 @@ public class BulletShooter : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    void Update()
     {
         RotateToTarget();
         timer += Time.deltaTime;
@@ -38,18 +38,25 @@ public class BulletShooter : MonoBehaviour
     bool CanSeeTarget() {
         RaycastHit hit;
         Ray ray = new Ray(transform.position + transform.rotation * spawnOffset, transform.forward);
-        Physics.Raycast(ray, out hit);
-        int layer = hit.collider.gameObject.layer;
-
-        return targetLayers == (targetLayers | (1 << layer));
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
+            int layer = hit.collider.gameObject.layer;
+            Debug.Log(layer);
+            return target.layer == layer;
+        } else {
+            return false;
+        }
+   
     }
 
     void RotateToTarget(){
-        transform.rotation = Quaternion.FromToRotation(Vector3.forward, target.transform.position - transform.position);
+        Vector3 difference = target.transform.position - transform.position;
+        difference.y = 0;
+        transform.rotation = Quaternion.FromToRotation(Vector3.forward, difference);
     }
 
     void Shoot()
     {
-        Instantiate(bullet, transform.position + transform.rotation * spawnOffset, transform.rotation);
+        GameObject obj = Instantiate(bullet, transform.position + transform.rotation * spawnOffset, transform.rotation);
+        obj.GetComponent<Bullet>().layerMask = layerMask;
     }
 }

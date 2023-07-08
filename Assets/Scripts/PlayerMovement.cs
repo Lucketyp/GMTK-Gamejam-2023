@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float walkSpeed = 10f;
     [SerializeField] float sprintSpeed = 20f;
     [SerializeField] float accelerationMultiplier = 1f;
-    [SerializeField] float deaccelerationMultiplier = 1f;
+    [SerializeField] float deccelerationMultiplier = 1f;
     [SerializeField] float turnAccelerationMultiplier = 1f;
     [SerializeField] float speed;
     [SerializeField] Transform relativeTo;
@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         float moveInDirection = Vector3.Dot(currentDirection, inputDirection);
 
         Vector3 accelerate = currentDirection * Mathf.Max(moveInDirection, 0) * accelerationMultiplier * (1 - currentSpeed / maxSpeed);
-        Vector3 deccelerate = -currentDirection * Mathf.Min(Mathf.Max(1-moveInDirection, 0), 1) * deaccelerationMultiplier;
+        Vector3 deccelerate = -currentDirection * Mathf.Min(Mathf.Max(1-moveInDirection, 0), 1) * deccelerationMultiplier;
         Vector3 turn = Vector3.Cross(Vector3.Cross(currentDirection, inputDirection), currentDirection) * turnAccelerationMultiplier;
 
         Vector3 finalAcceleration = accelerate + deccelerate + turn;
