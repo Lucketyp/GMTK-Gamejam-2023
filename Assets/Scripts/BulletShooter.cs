@@ -14,17 +14,52 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] float shootTimeInRound = 0.5f;
     [SerializeField] float minDistanceForOffset = Mathf.Infinity;
     [SerializeField] float bulletSpeed;
+    [SerializeField] float moveSpeed = 4;
+    [SerializeField] float fleeRange = 15; 
+    [SerializeField] float shootAgainRange = 20; 
+
     float shootTime = 1f;
     float timer = 0f;
     int bulletsToFire = 1;
-
-    void Start()
-    {
-
-    }
+    int behaviour;
 
     void Update()
-    {
+    {            
+        behaviour = checkDistance();
+        Behaviour(behaviour);
+    }
+
+    int checkDistance() {
+        Vector3 difference = target.transform.position - spawnOffset.position;
+        difference.y = 0;
+        float distance = difference.magnitude;
+        if(distance < fleeRange){
+            return 1;
+        } else if(distance >= shootAgainRange){
+            return 0;
+        }
+        return behaviour;
+    }
+
+    void Behaviour(int behaviour) {
+        switch(behaviour){
+            case 0:
+                ShootBehaviour();
+                break;
+            case 1:
+                RunBehaviour();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void RunBehaviour(){
+        RotateToTarget(true);
+        transform.position += transform.forward * Time.deltaTime * moveSpeed;
+    }
+
+    void ShootBehaviour(){
         RotateToTarget();
         timer += Time.deltaTime;
         if (timer >= shootTime && CanSeeTarget())
@@ -53,8 +88,11 @@ public class BulletShooter : MonoBehaviour
    
     }
 
-    void RotateToTarget(){
+    void RotateToTarget(bool flipped = false){
         Vector3 difference = target.transform.position - spawnOffset.position;
+        if(flipped){
+            difference *= -1;
+        }
         difference.y = 0;
         transform.rotation = Quaternion.FromToRotation(Vector3.forward, difference);
     }
