@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject RestartScreen;
     [SerializeField] GameObject BearModel;
     [SerializeField] LayerMask deadlyLayers;
+    [SerializeField] int maxHealth = 3;
     Vector3 initalPosition;
 
     void Start()
@@ -17,7 +18,10 @@ public class Player : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         Debug.Log(other.gameObject.layer);
         if(deadlyLayers == (deadlyLayers | (1 << other.gameObject.layer))){
-            StartCoroutine(PlayerDeath());
+            maxHealth--;
+            if(maxHealth <= 0){
+                StartCoroutine(PlayerDeath());
+            }
         }
     }
 

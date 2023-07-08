@@ -22,6 +22,12 @@ public class BulletShooter : MonoBehaviour
     float timer = 0f;
     int bulletsToFire = 1;
     int behaviour;
+    Animator animator;
+
+    void Start()
+    {
+        animator = GetComponentInChildren<Animator>();
+    }
 
     void Update()
     {            
@@ -99,6 +105,7 @@ public class BulletShooter : MonoBehaviour
 
     void Shoot()
     {
+        animator.SetTrigger("shoot");
         Vector3 spawnAt = spawnOffset.position;
         Vector3 diff = target.transform.position - spawnAt;
         float distance = diff.magnitude;
