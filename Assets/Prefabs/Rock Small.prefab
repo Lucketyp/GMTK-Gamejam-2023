@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3617659620928530223}
   - component: {fileID: 994290912018808311}
   - component: {fileID: 757737949345974377}
+  - component: {fileID: 7458960239359464093}
   m_Layer: 0
   m_Name: Rock Small
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3617659620928530223
 MeshFilter:
@@ -106,3 +107,21 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1993173786529021412, guid: 7209045d6a56cab468ef5d2736c8af55, type: 3}
+--- !u!114 &7458960239359464093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3145855732455777777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e59327c435ef354a97c028a0abaa08f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inViewColliderLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  toLayer:
+    serializedVersion: 2
+    m_Bits: 128

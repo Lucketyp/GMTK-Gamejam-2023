@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float speed = 20f;
+    public LayerMask layerMask;
     BoxCollider boxCollider;
 
     void Start()
@@ -18,7 +19,7 @@ public class Bullet : MonoBehaviour
     }
 
     void FixedUpdate() {
-        if(Physics.CheckBox(boxCollider.center + transform.position, boxCollider.size)) {
+        if(Physics.CheckBox(boxCollider.center + transform.position, boxCollider.size, Quaternion.identity, layerMask)) {
             Destroy(gameObject);
         }
     }
