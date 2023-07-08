@@ -6,6 +6,7 @@ public class BulletShooter : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
     [SerializeField] float shootTime = 1f;
+    [SerializeField] Transform target;
     float timer = 0f;
 
     void Start()
@@ -13,11 +14,17 @@ public class BulletShooter : MonoBehaviour
         
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        transform.rotation = Quaternion.FromToRotation(Vector3.forward, target.transform.position - transform.position);
+
         timer += Time.deltaTime;
         if(timer >= shootTime){
             timer = 0f;
+
+            RaycastHit hit;
+            Physics.Raycast(transform.position, transform.forward, out hit);
+            
             Shoot();
         }
     }
