@@ -11,7 +11,7 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] int maxFiredInRound;
     [SerializeField] int maxSecondsBetweenRounds;
     float timer = 0f;
-    float shootTime = 1f;
+    [SerializeField] float shootTime = 1f;
     int bulletsToFire = 1;
 
     void Start()
@@ -59,5 +59,6 @@ public class BulletShooter : MonoBehaviour
     {
         GameObject obj = Instantiate(bullet, transform.position + transform.rotation * spawnOffset, transform.rotation);
         obj.GetComponent<Bullet>().layerMask = layerMask;
+        Destroy(obj, 15f);
     }
 }

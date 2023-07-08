@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    [SerializeField] LayerMask deathByLayers;
+    [SerializeField] LayerMask deadlyLayers;
     Vector3 initalPosition;
 
     void Start()
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
         Debug.Log(other.gameObject.layer);
-        if(deathByLayers == (deathByLayers | (1 << other.gameObject.layer))){
+        if(deadlyLayers == (deadlyLayers | (1 << other.gameObject.layer))){
             //transform.position = initalPosition;
             Debug.Log("Dieded");
         }
