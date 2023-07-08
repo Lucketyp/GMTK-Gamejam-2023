@@ -60,11 +60,13 @@ public class BulletShooter : MonoBehaviour
     void Shoot()
     {
         Vector3 spawnAt = spawnOffset.position;
-        Vector3 diff = target.transform.position - spawnOffset.position;
+        Vector3 diff = target.transform.position - spawnAt;
         float distance = diff.magnitude;
-        if(distance > )
+        if(distance > minDistanceForOffset){
+            spawnAt += diff * (distance - minDistanceForOffset) / distance;
+        }
 
-        GameObject obj = Instantiate(bullet, spawnOffset.position, transform.rotation);
+        GameObject obj = Instantiate(bullet, spawnAt, transform.rotation);
         obj.GetComponent<Bullet>().layerMask = layerMask;
         Destroy(obj, 15f);
     }
