@@ -1622,8 +1622,9 @@ MonoBehaviour:
   sprintSpeed: 20
   accelerationMultiplier: 4
   deaccelerationMultiplier: 15
-  turnAccekeratuibMultiplier: 25
+  turnAccelerationMultiplier: 15
   speed: 0
+  relativeTo: {fileID: 963194228}
 --- !u!1001 &2061547291
 PrefabInstance:
   m_ObjectHideFlags: 0

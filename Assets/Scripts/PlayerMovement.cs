@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float sprintSpeed = 20f;
     [SerializeField] float accelerationMultiplier = 1f;
     [SerializeField] float deaccelerationMultiplier = 1f;
-    [SerializeField] float turnAccekeratuibMultiplier = 1f;
+    [SerializeField] float turnAccelerationMultiplier = 1f;
     [SerializeField] float speed;
     [SerializeField] Transform relativeTo;
 
@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         float maxSpeed = walkSpeed;
         if(Input.GetKey(KeyCode.LeftShift)){
@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 currentVelocity = rb.velocity;
         float currentSpeed = currentVelocity.magnitude;
         Vector3 currentDirection = Vector3.zero;
-        if(currentSpeed > 0.1){
+        if(currentSpeed > 0){
             currentDirection = currentVelocity / currentSpeed;
         } else {
             rb.velocity = Vector3.zero;
@@ -51,12 +51,16 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 accelerate = currentDirection * Mathf.Max(moveInDirection, 0) * accelerationMultiplier * (1 - currentSpeed / maxSpeed);
         Vector3 deccelerate = -currentDirection * Mathf.Min(Mathf.Max(1-moveInDirection, 0), 1) * deaccelerationMultiplier;
-        Vector3 turn = Vector3.Cross(Vector3.Cross(currentDirection, inputDirection), currentDirection) * turnAccekeratuibMultiplier;
+        Vector3 turn = Vector3.Cross(Vector3.Cross(currentDirection, inputDirection), currentDirection) * turnAccelerationMultiplier;
 
-        if(deccelerate.magnitude * Time.deltaTime > currentSpeed){
-            rb.velocity = Vector3.zero;
+        Vector3 finalAcceleration = accelerate + deccelerate + turn;
+
+        Vector3 newVelocity = currentVelocity + finalAcceleration * Time.fixedDeltaTime;
+
+        if(Vector3.Dot(currentVelocity, newVelocity) >= 0){
+            rb.velocity = newVelocity;
         } else {
-            rb.AddForce(accelerate + deccelerate + turn, ForceMode.Acceleration);
+            rb.velocity = Vector3.zero;
         }
 
         speed = rb.velocity.magnitude;
