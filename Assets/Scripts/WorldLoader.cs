@@ -54,6 +54,7 @@ struct SpawnType
     public float perlinMultiplier;
     public float spawnProbability;
     public float typeDominance;
+    public bool keepSize;
 }
 
 public class WorldLoader : MonoBehaviour
@@ -185,7 +186,9 @@ public class WorldLoader : MonoBehaviour
                                 Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up)
                             );
 
-                            obj.transform.localScale *= Random.Range(0.7f, 1.2f) * Mathf.Sqrt((1-spawnValue) / (1-prob));
+                            if(!spawnType.keepSize){
+                                obj.transform.localScale *= Random.Range(0.7f, 1.2f) * Mathf.Sqrt((1-spawnValue) / (1-prob));
+                            }
                             obj.transform.SetParent(chunk.transform);
                         }
                     }
