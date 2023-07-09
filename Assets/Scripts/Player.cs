@@ -38,6 +38,7 @@ public class Player : MonoBehaviour, IDamgeable
             BearModel.transform.position += new Vector3(0, 0.005f, 0);
             yield return new WaitForSeconds(0.01f);
         }
+        PlayerPrefs.SetInt("wins", 0);
         RestartScreen.SetActive(true);
     }
 }
