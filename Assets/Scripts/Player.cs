@@ -10,15 +10,18 @@ public class Player : MonoBehaviour, IDamgeable
     [SerializeField] int maxHealth = 3;
     Vector3 initalPosition;
     AudioSource audioSource;
+    ParticleSystem blood;
 
     void Start()
     {
+        blood = GetComponentInChildren<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
         initalPosition = transform.position;
     }
 
     public void TakeDamage(int damage) {
         audioSource.Play();
+        blood.Play();
         maxHealth -= damage;
         if(maxHealth <= 0){
             StartCoroutine(PlayerDeath());
