@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class BulletShooter : MonoBehaviour
 {
+    public GameObject target;
     [SerializeField] GameObject bullet;
-    [SerializeField] GameObject target;
     [SerializeField] LayerMask layerMask;
     [SerializeField] Transform spawnOffset;
     [SerializeField] int maxFiredInRound;
@@ -30,17 +30,18 @@ public class BulletShooter : MonoBehaviour
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
+        Debug.Log(animator);
     }
 
     void Update()
     {          
         if(behaviour != 2) {
-            behaviour = checkDistance();
+            behaviour = CheckDistance();
             Behaviour(behaviour);
         }
     }
 
-    int checkDistance() {
+    int CheckDistance() {
         Vector3 difference = target.transform.position - spawnOffset.position;
         difference.y = 0;
         float distance = difference.magnitude;
@@ -76,10 +77,12 @@ public class BulletShooter : MonoBehaviour
     }
 
     void ShootBehaviour(){
+
         RotateToTarget();
         timer += Time.deltaTime;
         if (timer >= shootTime && CanSeeTarget())
         {
+            
             timer = 0f;
             Shoot();
             shootTime = shootTimeInRound;
@@ -111,6 +114,7 @@ public class BulletShooter : MonoBehaviour
     bool CanSeeTarget() {
         RaycastHit hit;
         Ray ray = new Ray(spawnOffset.position, transform.forward);
+        Debug.DrawRay(spawnOffset.position, transform.forward);
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
             int layer = hit.collider.gameObject.layer;
             return target.layer == layer;
@@ -136,11 +140,13 @@ public class BulletShooter : MonoBehaviour
         Vector3 spawnAt = spawnOffset.position;
         Vector3 diff = target.transform.position - spawnAt;
         float distance = diff.magnitude;
+
         if(distance > minDistanceForOffset){
             spawnAt += diff * (distance - minDistanceForOffset) / distance;
         }
 
         GameObject obj = Instantiate(bullet, spawnAt, transform.rotation);
+        Debug.Log(spawnAt);
         obj.GetComponent<Bullet>().layerMask = layerMask;
         obj.GetComponent<Bullet>().speed = bulletSpeed;
         Destroy(obj, 15f);

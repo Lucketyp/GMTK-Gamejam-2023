@@ -87,9 +87,10 @@ public class WorldLoader : MonoBehaviour
         playerCamera.transform.SetParent(currentPlayer.transform);
         currentPlayer.GetComponent<PlayerMovement>().relativeTo = playerCamera.transform;
 
-        //currentHunter = Instantiate(hunter, currentPlayer.transform.position + hunterPlayer, Quaternion.identity);
-        
-        avoidObjects = new GameObject[1]{currentPlayer};
+        currentHunter = Instantiate(hunter, currentPlayer.transform.position + hunterPlayer, Quaternion.identity);
+        currentHunter.GetComponent<BulletShooter>().target = currentPlayer;
+
+        avoidObjects = new GameObject[2]{currentPlayer, currentHunter};
 
         foreach (SpawnType s in spawnTypes)
         {
@@ -105,7 +106,6 @@ public class WorldLoader : MonoBehaviour
         int maxX = (int)Mathf.Ceil((spawnPosition.x + spawnRadius) / chunkSize);
         int minY = (int)Mathf.Floor((spawnPosition.z - spawnRadius) / chunkSize);
         int maxY = (int)Mathf.Ceil((spawnPosition.z + spawnRadius) / chunkSize);
-        Debug.Log(minX + " -> " + maxX + ", " + minY + " -> " + maxY);
 
 
         for (int x = minX; x <= maxX; x++)
@@ -194,7 +194,7 @@ public class WorldLoader : MonoBehaviour
                                 Quaternion.AngleAxis(Random.Range(0f, Mathf.PI * 2), Vector3.up)
                             );
 
-                            //obj.transform.SetParent(chunk.transform);
+                            obj.transform.SetParent(chunk.transform);
                         }
                     }
 
