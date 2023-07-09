@@ -8,7 +8,7 @@ public class StartScript : MonoBehaviour
     {
         // Press any key to start the game
         if(Input.anyKeyDown){
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Generative Scene");
         }
     }
 }
