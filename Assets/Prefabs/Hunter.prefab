@@ -4941,7 +4941,7 @@ MonoBehaviour:
   maxFiredInRound: 3
   maxTimeBetweenRounds: 5
   minTimeBetweenRounds: 3
-  shootTimeInRound: 0.3
+  shootTimeInRound: 0.7
   minDistanceForOffset: 50
   bulletSpeed: 50
   moveSpeed: 10
@@ -4951,7 +4951,7 @@ MonoBehaviour:
   gunShot: {fileID: 9107007095263377504}
   moveAroundMultiplier: 20
   moveFromMultiplier: 10
-  turnSpeed: 5
+  turnSpeed: 4
   behaviour: 0
 --- !u!82 &9107007095263377504
 AudioSource:
