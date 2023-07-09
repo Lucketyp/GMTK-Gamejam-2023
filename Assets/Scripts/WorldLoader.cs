@@ -90,7 +90,7 @@ public class WorldLoader : MonoBehaviour
         currentHunter = Instantiate(hunter, hunterPosition, Quaternion.identity);
         currentHunter.GetComponent<BulletShooter>().target = currentPlayer;
 
-        avoidObjects = new GameObject[0]{};
+        avoidObjects = new GameObject[2]{currentHunter, currentPlayer};
 
         foreach (SpawnType s in spawnTypes)
         {
@@ -130,9 +130,9 @@ public class WorldLoader : MonoBehaviour
         Vector3 chunkCenter = new Vector3(chunkSize * x, 0, chunkSize * y) + transform.position;
         chunk.transform.position = chunkCenter;
 
-        /*GameObject groundObj = Instantiate(ground, chunkCenter, Quaternion.identity);
+        GameObject groundObj = Instantiate(ground, chunkCenter, Quaternion.identity);
         groundObj.transform.localScale = new Vector3(chunkSize, 1, chunkSize);
-        groundObj.transform.SetParent(chunk.transform);*/
+        groundObj.transform.SetParent(chunk.transform);
 
         float negativeOffset = 1 << 16;
 
@@ -186,14 +186,14 @@ public class WorldLoader : MonoBehaviour
                             spawnCenter.z * spawnType.perlinMultiplier + perlinOffset.y + negativeOffset
                         );
 
-                        if (spawnValue < spawnType.spawnProbability /(1 + 0.01 * Vector3.Distance(transform.position, spawnCenter)))
+                        if (spawnValue < spawnType.spawnProbability /(1 + 0 * Vector3.Distance(transform.position, spawnCenter)))
                         {
                             GameObject obj = Instantiate(
                                 spawnType.variations[Random.Range(0, spawnType.variations.Length)],
                                 spawnCenter + (new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f))) * spawnSize / 4,
-                                Quaternion.AngleAxis(Random.Range(0f, Mathf.PI * 2), Vector3.up)
+                                Quaternion.AngleAxis(Random.Range(0f, Mathf.PI * 2), Vector3.left)
                             );
-
+                            
                             obj.transform.SetParent(chunk.transform);
                         }
                     }
