@@ -19,8 +19,7 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] float fleeRange = 15; 
     [SerializeField] float shootAgainRange = 20; 
     [SerializeField] float deathRange = 1f;
-
-    [SerializeField] GameObject HunterModel;
+    [SerializeField] AudioSource gunShot;
 
     float shootTime = 1f;
     float timer = 0f;
@@ -132,6 +131,7 @@ public class BulletShooter : MonoBehaviour
 
     void Shoot()
     {
+        gunShot.Play();
         animator.SetTrigger("shoot");
         Vector3 spawnAt = spawnOffset.position;
         Vector3 diff = target.transform.position - spawnAt;
