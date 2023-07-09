@@ -222,7 +222,7 @@ public class BulletShooter : MonoBehaviour
             spawnAt += diff * (distance - minDistanceForOffset) / distance;
         }
 
-        GameObject obj = Instantiate(bullet, spawnAt, transform.rotation);
+        GameObject obj = Instantiate(bullet, spawnAt, Quaternion.FromToRotation(Vector3.up, transform.forward));
         obj.GetComponent<Bullet>().layerMask = layerMask;
         obj.GetComponent<Bullet>().speed = bulletSpeed;
         Destroy(obj, 15f);
