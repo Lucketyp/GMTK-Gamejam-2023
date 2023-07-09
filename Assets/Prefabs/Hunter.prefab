@@ -77,17 +77,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a0da85f07259a4a89d1f75bb892dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 5109141495428001968, guid: de9ddc67a7e3db04aaf7eed4e36b17b1, type: 3}
   target: {fileID: 0}
+  bullet: {fileID: 5109141495428001968, guid: de9ddc67a7e3db04aaf7eed4e36b17b1, type: 3}
   layerMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 64
   spawnOffset: {fileID: 2370485673440047274}
   maxFiredInRound: 3
   maxTimeBetweenRounds: 5
   minTimeBetweenRounds: 3
   shootTimeInRound: 0.3
-  minDistanceForOffset: 70
+  minDistanceForOffset: 50
   bulletSpeed: 50
   moveSpeed: 4.5
   fleeRange: 20

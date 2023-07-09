@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 55810257}
   - component: {fileID: 55810256}
   m_Layer: 0
-  m_Name: WorldLoader
+  m_Name: World
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,22 +161,22 @@ MonoBehaviour:
     - {fileID: 4631823909344954961, guid: 8dad898322ef66e4cb2112ad8f9d5465, type: 3}
     - {fileID: 2556676087468091668, guid: 5968a4e0437f4e6449969c82570b9dc6, type: 3}
     gridResolution: 2
-    perlinMultiplier: 0.1
-    spawnProbability: 0.3
+    perlinMultiplier: 0.05
+    spawnProbability: 0.2
     typeDominance: 2
   - variations:
     - {fileID: 3727592250985056365, guid: 61de3b34975744044920b0d3f1289a02, type: 3}
     - {fileID: 5915450127983819563, guid: f50e7fbe9f1ac8e4dac348e891b387e9, type: 3}
     - {fileID: 3145855732455777777, guid: baa3f2fc9b70d624391a89fd7f2dd2c8, type: 3}
     gridResolution: 1
-    perlinMultiplier: 0.1
-    spawnProbability: 0.7
+    perlinMultiplier: 0.03
+    spawnProbability: 0.5
     typeDominance: 1
   typeGridResolution: 5
   typePerlinMultiplier: 0.03
-  hunter: {fileID: 0}
-  player: {fileID: 800010338689134573, guid: d7d68b6a733da2f4b978f428aab02e67, type: 3}
-  hunterPlayer: {x: 0, y: 0, z: 0}
+  hunter: {fileID: 6592837934284942895, guid: 8ec30d8b4dce11f4d9d59309584c9d0a, type: 3}
+  player: {fileID: 4496706744180438020, guid: f2e914ceb3e499849a24d227e53fb6a7, type: 3}
+  hunterPlayer: {x: 0, y: -0.5, z: 300}
   playerCamera: {fileID: 908273680}
   avoidSpawnRadius: 20
 --- !u!4 &55810257
@@ -372,11 +372,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908273680}
-  m_LocalRotation: {x: 0.57192737, y: -0, z: -0, w: 0.8203043}
-  m_LocalPosition: {x: 0, y: 15, z: -6.4}
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
+  m_LocalPosition: {x: 0, y: 30, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 69.769, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}

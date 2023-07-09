@@ -30,7 +30,6 @@ public class BulletShooter : MonoBehaviour
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        Debug.Log(animator);
     }
 
     void Update()
@@ -114,7 +113,6 @@ public class BulletShooter : MonoBehaviour
     bool CanSeeTarget() {
         RaycastHit hit;
         Ray ray = new Ray(spawnOffset.position, transform.forward);
-        Debug.DrawRay(spawnOffset.position, transform.forward);
         if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
             int layer = hit.collider.gameObject.layer;
             return target.layer == layer;
@@ -146,7 +144,6 @@ public class BulletShooter : MonoBehaviour
         }
 
         GameObject obj = Instantiate(bullet, spawnAt, transform.rotation);
-        Debug.Log(spawnAt);
         obj.GetComponent<Bullet>().layerMask = layerMask;
         obj.GetComponent<Bullet>().speed = bulletSpeed;
         Destroy(obj, 15f);
