@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Prefabs/Bullet.prefab.meta
 guid: 1699076c6e80a634f9998c07a3c23f02
+=======
+guid: a61a1b533961f9f4f851763b8769c837
+>>>>>>> lucas2:Assets/Prefabs/RestartMenu.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 
