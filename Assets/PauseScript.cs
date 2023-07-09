@@ -10,7 +10,7 @@ public class PauseScript : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)){
+        if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Space)){
             paused = !paused;
             Time.timeScale = paused ? 0 : 1;
             pauseMenu.SetActive(paused);
