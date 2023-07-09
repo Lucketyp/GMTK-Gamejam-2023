@@ -81,7 +81,7 @@ MonoBehaviour:
   bullet: {fileID: 5538606210951338087, guid: de9ddc67a7e3db04aaf7eed4e36b17b1, type: 3}
   layerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2112
   spawnOffset: {fileID: 2370485673440047274}
   maxFiredInRound: 3
   maxTimeBetweenRounds: 5
@@ -89,11 +89,15 @@ MonoBehaviour:
   shootTimeInRound: 0.3
   minDistanceForOffset: 50
   bulletSpeed: 50
-  moveSpeed: 4.5
+  moveSpeed: 10
   fleeRange: 20
   shootAgainRange: 25
   deathRange: 2
   gunShot: {fileID: 9107007095263377504}
+  moveAroundMultiplier: 0
+  moveFromMultiplier: 10
+  turnSpeed: 5
+  acceleration: 10
   behaviour: 0
 --- !u!82 &9107007095263377504
 AudioSource:

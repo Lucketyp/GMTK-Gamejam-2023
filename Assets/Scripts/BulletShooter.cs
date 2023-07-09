@@ -16,16 +16,21 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] float minDistanceForOffset = Mathf.Infinity;
     [SerializeField] float bulletSpeed;
     [SerializeField] float moveSpeed = 4;
-    [SerializeField] float fleeRange = 15; 
-    [SerializeField] float shootAgainRange = 20; 
+    [SerializeField] float fleeRange = 15;
+    [SerializeField] float shootAgainRange = 20;
     [SerializeField] float deathRange = 1f;
     [SerializeField] AudioSource gunShot;
+    [SerializeField] float moveAroundMultiplier;
+    [SerializeField] float moveFromMultiplier;
+    [SerializeField] float turnSpeed;
+    [SerializeField] float acceleration;
 
     float shootTime = 1f;
     float timer = 0f;
     int bulletsToFire = 1;
     [SerializeField] int behaviour;
     Animator animator;
+    Vector3 velocity;
 
     void Start()
     {
@@ -33,29 +38,39 @@ public class BulletShooter : MonoBehaviour
     }
 
     void Update()
-    {          
-        if(behaviour != 2) {
+    {
+        if (behaviour != 2)
+        {
             behaviour = CheckDistance();
             Behaviour(behaviour);
         }
     }
 
-    int CheckDistance() {
+    int CheckDistance()
+    {
         Vector3 difference = target.transform.position - spawnOffset.position;
         difference.y = 0;
         float distance = difference.magnitude;
-        if(distance < deathRange){
+        if (distance < deathRange)
+        {
             return 2;
-        } else if(distance < fleeRange){
+        }
+        else if (distance < fleeRange)
+        {
             return 1;
-        } else if(distance > shootAgainRange){
+        }
+        else if (distance > shootAgainRange)
+        {
             return 0;
         }
+
         return behaviour;
     }
 
-    void Behaviour(int behaviour) {
-        switch(behaviour){
+    void Behaviour(int behaviour)
+    {
+        switch (behaviour)
+        {
             case 0:
                 ShootBehaviour();
                 break;
@@ -70,38 +85,86 @@ public class BulletShooter : MonoBehaviour
         }
     }
 
-    void RunBehaviour(){
-        RotateToTarget(true);
-        transform.position += transform.forward * Time.deltaTime * moveSpeed;
+    void RunBehaviour()
+    {
+        float speed = velocity.magnitude;
+        Vector3 currentMoveDirection = velocity / speed;
+
+        Vector3 toPlayer = target.transform.position - transform.position;
+        toPlayer.y = 0;
+        Vector3 playerDirection = toPlayer / toPlayer.magnitude;
+
+        Vector3 boxSize = new Vector3(100f, 100f, 100f);
+        Vector3 boxCenter = transform.position;
+        Collider[] colliders = Physics.OverlapBox(boxCenter, boxSize, transform.rotation);
+
+        Vector3 moveAround = Vector3.zero;
+        Vector3 moveFrom = Vector3.zero;
+        float proximity = 0;
+
+        foreach (Collider c in colliders)
+        {
+            if (layerMask == (layerMask | (1 << c.gameObject.layer)))
+            {
+                Vector3 toObstacle = c.transform.position - transform.position;
+                toObstacle.y = 0;
+                float distanceToObstacle = toObstacle.magnitude;
+
+                float invCubeDist = 1 / Mathf.Pow(distanceToObstacle, 3);
+
+                moveAround += Vector3.Cross(toObstacle, Vector3.Cross(currentMoveDirection, toObstacle)) * invCubeDist ;
+                moveFrom = -toObstacle * invCubeDist;
+                proximity += invCubeDist;
+            }
+        }
+
+
+        velocity = ((moveAroundMultiplier * moveAround.normalized + moveFrom.normalized * moveFromMultiplier) * proximity - playerDirection);
+        velocity = velocity.normalized;
+
+        Debug.DrawRay(transform.position, moveAround.normalized * 3, Color.blue);
+        Debug.DrawRay(transform.position, moveFrom.normalized * 3, Color.red);
+
+        transform.position += velocity * moveSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation, 
+            Quaternion.FromToRotation(Vector3.forward, velocity), 
+            Time.deltaTime * turnSpeed
+        );
     }
 
-    void ShootBehaviour(){
+    void ShootBehaviour()
+    {
 
         RotateToTarget();
         timer += Time.deltaTime;
         if (timer >= shootTime && CanSeeTarget())
         {
-            
+
             timer = 0f;
             Shoot();
             shootTime = shootTimeInRound;
             bulletsToFire--;
 
-            if(bulletsToFire == 0){
+            if (bulletsToFire == 0)
+            {
                 bulletsToFire = Random.Range(1, maxFiredInRound + 1);
                 shootTime = Random.Range(0, 1000) / 1000 * (maxTimeBetweenRounds - minTimeBetweenRounds) + minTimeBetweenRounds;
             }
         }
     }
 
-    void DeathBehaviour(){
+    void DeathBehaviour()
+    {
         Debug.Log("Hunter Death");
         StartCoroutine(HunterDeath());
     }
 
-    IEnumerator HunterDeath(){
+    IEnumerator HunterDeath()
+    {
         GetComponentInChildren<Renderer>().material.color = Color.red;
-        for(int i = 0; i < 90; i++){
+        for (int i = 0; i < 90; i++)
+        {
             transform.Rotate(0, 0, 1);
             transform.position += new Vector3(0, 0.01f, 0);
             yield return new WaitForSeconds(0.005f);
@@ -110,21 +173,27 @@ public class BulletShooter : MonoBehaviour
         SceneManager.LoadScene("Win Screen");
     }
 
-    bool CanSeeTarget() {
+    bool CanSeeTarget()
+    {
         RaycastHit hit;
         Ray ray = new Ray(spawnOffset.position, transform.forward);
-        if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) {
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        {
             int layer = hit.collider.gameObject.layer;
             return target.layer == layer;
-        } else {
+        }
+        else
+        {
             return false;
         }
-   
+
     }
 
-    void RotateToTarget(bool flipped = false){
+    void RotateToTarget(bool flipped = false)
+    {
         Vector3 difference = target.transform.position - spawnOffset.position;
-        if(flipped){
+        if (flipped)
+        {
             difference *= -1;
         }
         difference.y = 0;
@@ -139,7 +208,8 @@ public class BulletShooter : MonoBehaviour
         Vector3 diff = target.transform.position - spawnAt;
         float distance = diff.magnitude;
 
-        if(distance > minDistanceForOffset){
+        if (distance > minDistanceForOffset)
+        {
             spawnAt += diff * (distance - minDistanceForOffset) / distance;
         }
 
