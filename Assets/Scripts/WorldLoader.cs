@@ -67,12 +67,10 @@ public class WorldLoader : MonoBehaviour
     [SerializeField] float typePerlinMultiplier;
 
     [SerializeField] GameObject hunter;
-    [SerializeField] GameObject player;
     [SerializeField] Vector2 hunterPlayer;
-    [SerializeField] GameObject playerCamera;
     [SerializeField] float avoidSpawnRadius;
 
-    GameObject currentPlayer;
+    [SerializeField] GameObject currentPlayer;
     GameObject currentHunter;
     GameObject[] avoidObjects;
     float totalTypeDominance = 0;
@@ -84,10 +82,6 @@ public class WorldLoader : MonoBehaviour
     {
         hasLoaded = new Grid<bool>(false);
         perlinOffset = new Vector2(Random.Range(0f, chunkSize * 1000f), Random.Range(0f, chunkSize * 1000f));
-
-        currentPlayer = Instantiate(player, transform.position + Vector3.up, Quaternion.identity);
-        playerCamera.transform.SetParent(currentPlayer.transform);
-        currentPlayer.GetComponent<PlayerMovement>().relativeTo = playerCamera.transform;
         
         Vector3 hunterPosition = currentPlayer.transform.position;
         hunterPosition.x += hunterPlayer.x;
