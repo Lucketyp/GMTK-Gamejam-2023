@@ -20,6 +20,7 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] float shootAgainRange = 20;
     [SerializeField] float deathRange = 1f;
     [SerializeField] AudioSource gunShot;
+    [SerializeField] AudioSource deathSound;
     [SerializeField] float moveAroundMultiplier;
     [SerializeField] float moveFromMultiplier;
     [SerializeField] float turnSpeed;
@@ -167,6 +168,7 @@ public class BulletShooter : MonoBehaviour
 
     void DeathBehaviour()
     {
+        deathSound.Play();
         Debug.Log("Hunter Death");
         StartCoroutine(HunterDeath());
     }

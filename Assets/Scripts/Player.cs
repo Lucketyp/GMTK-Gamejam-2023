@@ -9,13 +9,16 @@ public class Player : MonoBehaviour, IDamgeable
     [SerializeField] LayerMask deadlyLayers;
     [SerializeField] int maxHealth = 3;
     Vector3 initalPosition;
+    AudioSource audioSource;
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         initalPosition = transform.position;
     }
 
     public void TakeDamage(int damage) {
+        audioSource.Play();
         maxHealth -= damage;
         if(maxHealth <= 0){
             StartCoroutine(PlayerDeath());
