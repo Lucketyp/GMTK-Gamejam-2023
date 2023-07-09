@@ -1341,7 +1341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6875884097271051829, guid: 002acadd13f863e4aaf470970547d47f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.518
       objectReference: {fileID: 0}
     - target: {fileID: 6875884097271051829, guid: 002acadd13f863e4aaf470970547d47f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2522,6 +2522,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1884431657}
+    - target: {fileID: 2591966861431042226, guid: 8ec30d8b4dce11f4d9d59309584c9d0a, type: 3}
+      propertyPath: turnSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2591966861431042226, guid: 8ec30d8b4dce11f4d9d59309584c9d0a, type: 3}
       propertyPath: deathSound
       value: 
