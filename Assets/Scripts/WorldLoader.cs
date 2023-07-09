@@ -61,17 +61,16 @@ public class WorldLoader : MonoBehaviour
     [SerializeField] float chunkSize;
     [SerializeField] float spawnRadius;
 
-    [SerializeField] GameObject ground;
     [SerializeField] SpawnType[] spawnTypes;
     [SerializeField] int typeGridResolution;
     [SerializeField] float typePerlinMultiplier;
 
-    [SerializeField] GameObject hunter;
-    [SerializeField] Vector2 hunterPlayer;
     [SerializeField] float avoidSpawnRadius;
 
     [SerializeField] GameObject currentPlayer;
-    GameObject currentHunter;
+    [SerializeField] GameObject currentHunter;
+    [SerializeField] float distanceSpawnDiminish;
+
     GameObject[] avoidObjects;
     float totalTypeDominance = 0;
     Grid<bool> hasLoaded;
@@ -82,15 +81,8 @@ public class WorldLoader : MonoBehaviour
     {
         hasLoaded = new Grid<bool>(false);
         perlinOffset = new Vector2(Random.Range(0f, chunkSize * 1000f), Random.Range(0f, chunkSize * 1000f));
-        
-        Vector3 hunterPosition = currentPlayer.transform.position;
-        hunterPosition.x += hunterPlayer.x;
-        hunterPosition.y = 0;
-        hunterPosition.z += hunterPlayer.y;
-        currentHunter = Instantiate(hunter, hunterPosition, Quaternion.identity);
-        currentHunter.GetComponent<BulletShooter>().target = currentPlayer;
 
-        avoidObjects = new GameObject[2]{currentHunter, currentPlayer};
+        avoidObjects = new GameObject[0] { };
 
         foreach (SpawnType s in spawnTypes)
         {
@@ -112,10 +104,7 @@ public class WorldLoader : MonoBehaviour
         {
             for (int y = minY; y <= maxY; y++)
             {
-                if ((new Vector3(x * chunkSize, 0, y * chunkSize) - spawnPosition).magnitude <= spawnRadius)
-                {
-                    LoadChunk(x, y);
-                }
+                LoadChunk(x, y);
             }
         }
     }
@@ -130,10 +119,6 @@ public class WorldLoader : MonoBehaviour
         Vector3 chunkCenter = new Vector3(chunkSize * x, 0, chunkSize * y) + transform.position;
         chunk.transform.position = chunkCenter;
 
-        GameObject groundObj = Instantiate(ground, chunkCenter, Quaternion.identity);
-        groundObj.transform.localScale = new Vector3(chunkSize, 1, chunkSize);
-        groundObj.transform.SetParent(chunk.transform);
-
         float negativeOffset = 1 << 16;
 
         for (int tx = 0; tx < typeGridResolution; tx++)
@@ -143,8 +128,8 @@ public class WorldLoader : MonoBehaviour
                 float typeSize = chunkSize / typeGridResolution;
 
                 Vector3 typeCenter = chunkCenter;
-                typeCenter.x += (tx + 1 / 2f) * typeSize  - chunkSize / 2f;
-                typeCenter.z += (ty + 1f / 2f) * typeSize  - chunkSize / 2f;;
+                typeCenter.x += (tx + 1 / 2f) * typeSize - chunkSize / 2f;
+                typeCenter.z += (ty + 1f / 2f) * typeSize - chunkSize / 2f; ;
 
                 float typeValue = Mathf.PerlinNoise(
                     typeCenter.x * typePerlinMultiplier + perlinOffset.x + negativeOffset,
@@ -173,27 +158,34 @@ public class WorldLoader : MonoBehaviour
                         spawnCenter.z += (sy + 1f / 2f) * spawnSize - typeSize / 2f;
 
                         bool canSpawn = true;
-                        foreach(GameObject obj in avoidObjects){
-                            if(Vector3.Distance(obj.transform.position, spawnCenter) < avoidSpawnRadius){
+                        foreach (GameObject obj in avoidObjects)
+                        {
+                            if (Vector3.Distance(obj.transform.position, spawnCenter) < avoidSpawnRadius)
+                            {
                                 canSpawn = false;
                                 break;
                             }
                         }
-                        if(!canSpawn) continue;
+                        if (!canSpawn) continue;
 
                         float spawnValue = Mathf.PerlinNoise(
                             spawnCenter.x * spawnType.perlinMultiplier + perlinOffset.x + negativeOffset,
                             spawnCenter.z * spawnType.perlinMultiplier + perlinOffset.y + negativeOffset
                         );
 
-                        if (spawnValue < spawnType.spawnProbability /(1 + 0 * Vector3.Distance(transform.position, spawnCenter)))
+                        Vector3 diff = transform.position - spawnCenter;
+                        float centerDistance = Mathf.Max(Mathf.Abs(diff.x), Mathf.Abs(diff.z));
+                        float prob = spawnType.spawnProbability * Mathf.Sqrt(1f - centerDistance / spawnRadius);
+
+                        if (spawnValue < prob)
                         {
                             GameObject obj = Instantiate(
                                 spawnType.variations[Random.Range(0, spawnType.variations.Length)],
                                 spawnCenter + (new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f))) * spawnSize / 4,
-                                Quaternion.AngleAxis(Random.Range(0f, Mathf.PI * 2), Vector3.left)
+                                Quaternion.AngleAxis(Random.Range(0f, 360f), Vector3.up)
                             );
-                            
+
+                            obj.transform.localScale *= Random.Range(0.7f, 1.2f) * Mathf.Sqrt((1-spawnValue) / (1-prob));
                             obj.transform.SetParent(chunk.transform);
                         }
                     }
