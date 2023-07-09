@@ -30,9 +30,11 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] int behaviour;
     Animator animator;
     Vector3 velocity;
+    ParticleSystem muzzleFlash;
 
     void Start()
     {
+        muzzleFlash = GetComponentInChildren<ParticleSystem>();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -211,6 +213,7 @@ public class BulletShooter : MonoBehaviour
 
     void Shoot()
     {
+        muzzleFlash.Play();
         gunShot.Play();
         animator.SetTrigger("shoot");
         Vector3 spawnAt = spawnOffset.position;

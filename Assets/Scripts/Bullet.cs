@@ -7,11 +7,6 @@ public class Bullet : MonoBehaviour
     public float speed = 20f;
     public LayerMask layerMask;
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         transform.position += transform.up * speed * Time.deltaTime;
@@ -22,6 +17,7 @@ public class Bullet : MonoBehaviour
         if(other.tag == "Player") {
             other.GetComponentInParent<Player>().TakeDamage(1);
         }
+        Debug.Log("Hit " + other.name);
         Destroy(gameObject);
     }
 }
