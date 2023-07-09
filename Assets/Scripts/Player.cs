@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamgeable
 {
     [SerializeField] GameObject RestartScreen;
     [SerializeField] GameObject BearModel;
@@ -15,12 +15,10 @@ public class Player : MonoBehaviour
         initalPosition = transform.position;
     }
 
-    void OnTriggerEnter(Collider other) {
-        if(deadlyLayers == (deadlyLayers | (1 << other.gameObject.layer))){
-            maxHealth--;
-            if(maxHealth <= 0){
-                StartCoroutine(PlayerDeath());
-            }
+    public void TakeDamage(int damage) {
+        maxHealth -= damage;
+        if(maxHealth <= 0){
+            StartCoroutine(PlayerDeath());
         }
     }
 
@@ -36,4 +34,8 @@ public class Player : MonoBehaviour
         }
         RestartScreen.SetActive(true);
     }
+}
+
+interface IDamgeable {
+    void TakeDamage(int damage);
 }
