@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BulletShooter : MonoBehaviour
 {
@@ -104,7 +105,8 @@ public class BulletShooter : MonoBehaviour
             transform.position += new Vector3(0, 0.01f, 0);
             yield return new WaitForSeconds(0.01f);
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Win Screen");
     }
 
     bool CanSeeTarget() {
