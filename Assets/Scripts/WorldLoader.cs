@@ -77,11 +77,13 @@ public class WorldLoader : MonoBehaviour
     GameObject[] avoidObjects;
     float totalTypeDominance = 0;
     Grid<bool> hasLoaded;
+    Vector2 perlinOffset;
 
 
     void Start()
     {
         hasLoaded = new Grid<bool>(false);
+        perlinOffset = new Vector2(Random.Range(0f, chunkSize * 1000f), Random.Range(0f, chunkSize * 1000f));
 
         currentPlayer = Instantiate(player, transform.position + Vector3.up, Quaternion.identity);
         playerCamera.transform.SetParent(currentPlayer.transform);
@@ -134,7 +136,7 @@ public class WorldLoader : MonoBehaviour
         groundObj.transform.localScale = new Vector3(chunkSize, 1, chunkSize);
         groundObj.transform.SetParent(chunk.transform);
 
-        float perlinOffset = 1 << 16;
+        float negativeOffset = 1 << 16;
 
         for (int tx = 0; tx < typeGridResolution; tx++)
         {
@@ -147,8 +149,8 @@ public class WorldLoader : MonoBehaviour
                 typeCenter.z += (ty + 1f / 2f) * typeSize  - chunkSize / 2f;;
 
                 float typeValue = Mathf.PerlinNoise(
-                    typeCenter.x * typePerlinMultiplier + perlinOffset,
-                    typeCenter.z * typePerlinMultiplier + perlinOffset
+                    typeCenter.x * typePerlinMultiplier + perlinOffset.x + negativeOffset,
+                    typeCenter.z * typePerlinMultiplier + perlinOffset.y + negativeOffset
                     ) * totalTypeDominance;
 
 
@@ -182,8 +184,8 @@ public class WorldLoader : MonoBehaviour
                         if(!canSpawn) continue;
 
                         float spawnValue = Mathf.PerlinNoise(
-                            spawnCenter.x * spawnType.perlinMultiplier + perlinOffset,
-                            spawnCenter.z * spawnType.perlinMultiplier + perlinOffset
+                            spawnCenter.x * spawnType.perlinMultiplier + perlinOffset.x + negativeOffset,
+                            spawnCenter.z * spawnType.perlinMultiplier + perlinOffset.y + negativeOffset
                         );
 
                         if (spawnValue < spawnType.spawnProbability)

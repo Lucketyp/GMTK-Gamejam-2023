@@ -162,7 +162,7 @@ MonoBehaviour:
     - {fileID: 2556676087468091668, guid: 5968a4e0437f4e6449969c82570b9dc6, type: 3}
     gridResolution: 2
     perlinMultiplier: 0.05
-    spawnProbability: 0.2
+    spawnProbability: 0.25
     typeDominance: 2
   - variations:
     - {fileID: 3727592250985056365, guid: 61de3b34975744044920b0d3f1289a02, type: 3}
