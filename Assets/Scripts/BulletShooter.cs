@@ -23,7 +23,6 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] float moveAroundMultiplier;
     [SerializeField] float moveFromMultiplier;
     [SerializeField] float turnSpeed;
-    [SerializeField] float acceleration;
 
     float shootTime = 1f;
     float timer = 0f;
@@ -99,7 +98,8 @@ public class BulletShooter : MonoBehaviour
         Collider[] colliders = Physics.OverlapBox(boxCenter, boxSize, transform.rotation);
 
         Vector3 moveAround = Vector3.zero;
-        Vector3 moveFrom = Vector3.zero;
+        Vector3 closestDifference = Vector3.zero;
+        float closestDistance = -1;
         float proximity = 0;
 
         foreach (Collider c in colliders)
@@ -110,20 +110,29 @@ public class BulletShooter : MonoBehaviour
                 toObstacle.y = 0;
                 float distanceToObstacle = toObstacle.magnitude;
 
-                float invCubeDist = 1 / Mathf.Pow(distanceToObstacle, 3);
+                moveAround += Vector3.Cross(toObstacle, Vector3.Cross(currentMoveDirection, toObstacle)) / Mathf.Pow(distanceToObstacle, 3);
+                proximity += 1 / Mathf.Pow(distanceToObstacle, 2);
 
-                moveAround += Vector3.Cross(toObstacle, Vector3.Cross(currentMoveDirection, toObstacle)) * invCubeDist ;
-                moveFrom = -toObstacle * invCubeDist;
-                proximity += invCubeDist;
+                if(closestDistance < 0 || closestDistance > distanceToObstacle){
+                    closestDifference = toObstacle;
+                    closestDistance = distanceToObstacle;
+                }
             }
         }
 
+        if(closestDistance > 0){
+            RaycastHit hit;
+            if(Physics.Raycast(new Ray(transform.position, closestDifference), out hit, Mathf.Infinity, layerMask)){
+                closestDifference = hit.point - transform.position;
+                closestDifference.y = 0;
+            }
+        }
 
-        velocity = ((moveAroundMultiplier * moveAround.normalized + moveFrom.normalized * moveFromMultiplier) * proximity - playerDirection);
+        velocity = -playerDirection
+            + moveAroundMultiplier * moveAround.normalized * proximity 
+            - moveFromMultiplier * closestDifference / Mathf.Pow(closestDifference.magnitude, 3);
+
         velocity = velocity.normalized;
-
-        Debug.DrawRay(transform.position, moveAround.normalized * 3, Color.blue);
-        Debug.DrawRay(transform.position, moveFrom.normalized * 3, Color.red);
 
         transform.position += velocity * moveSpeed * Time.deltaTime;
         transform.rotation = Quaternion.Lerp(

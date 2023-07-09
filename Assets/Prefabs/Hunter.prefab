@@ -94,10 +94,9 @@ MonoBehaviour:
   shootAgainRange: 25
   deathRange: 2
   gunShot: {fileID: 9107007095263377504}
-  moveAroundMultiplier: 0
+  moveAroundMultiplier: 20
   moveFromMultiplier: 10
   turnSpeed: 5
-  acceleration: 10
   behaviour: 0
 --- !u!82 &9107007095263377504
 AudioSource:
