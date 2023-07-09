@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Start Screen.unity
     guid: 2c96b7d04e4e409408f3ff10bf84eda9
   - enabled: 1
-    path: Assets/Scenes/PostProcess Scene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/Generative Scene.unity
+    guid: 7ba540cdc0da1924f9965290a8e03656
   - enabled: 1
     path: Assets/Scenes/Win Screen.unity
     guid: bb2ff8abe273406429bfcb503341a701
