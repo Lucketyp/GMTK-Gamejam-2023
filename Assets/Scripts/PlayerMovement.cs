@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float deccelerationMultiplier = 1f;
     [SerializeField] float turnAccelerationMultiplier = 1f;
     [SerializeField] float speed;
-    [SerializeField] Transform relativeTo;
+    public Transform relativeTo;
 
     void Start()
     {

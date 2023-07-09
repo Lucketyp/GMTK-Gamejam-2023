@@ -6,11 +6,10 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
     public LayerMask layerMask;
-    BoxCollider boxCollider;
 
     void Start()
     {
-        boxCollider = GetComponent<BoxCollider>();
+
     }
 
     void Update()
@@ -18,10 +17,8 @@ public class Bullet : MonoBehaviour
         transform.position += transform.forward * speed * Time.deltaTime;
     }
 
-    void FixedUpdate() {
-        if(Physics.CheckBox(boxCollider.center + transform.position, boxCollider.size, Quaternion.identity, layerMask)) {
-            Destroy(gameObject);
-        }
-    }
 
+    void OnTriggerEnter(Collider other) {
+         Destroy(gameObject);
+    }
 }
