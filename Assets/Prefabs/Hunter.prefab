@@ -81,7 +81,7 @@ MonoBehaviour:
   bullet: {fileID: 5538606210951338087, guid: 1699076c6e80a634f9998c07a3c23f02, type: 3}
   layerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 119
   spawnOffset: {fileID: 2370485673440047274}
   maxFiredInRound: 3
   maxTimeBetweenRounds: 5
