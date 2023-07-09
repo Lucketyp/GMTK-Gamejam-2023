@@ -104,9 +104,9 @@ public class BulletShooter : MonoBehaviour
         for(int i = 0; i < 90; i++){
             transform.Rotate(0, 0, 1);
             transform.position += new Vector3(0, 0.01f, 0);
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.005f);
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene("Win Screen");
     }
 
