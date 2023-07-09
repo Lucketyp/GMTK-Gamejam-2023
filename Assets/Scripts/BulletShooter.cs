@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class BulletShooter : MonoBehaviour
 {
     public GameObject target;
+    public GameObject hunterManager;
     [SerializeField] GameObject bullet;
     [SerializeField] LayerMask layerMask;
     [SerializeField] Transform spawnOffset;
@@ -32,6 +33,7 @@ public class BulletShooter : MonoBehaviour
     Animator animator;
     Vector3 velocity;
     ParticleSystem muzzleFlash;
+    bool isDead = false;
 
     void Start()
     {
@@ -168,9 +170,12 @@ public class BulletShooter : MonoBehaviour
 
     void DeathBehaviour()
     {
-        deathSound.Play();
-        Debug.Log("Hunter Death");
-        StartCoroutine(HunterDeath());
+        if(!isDead){
+            deathSound.Play();
+            Debug.Log("Hunter Death");
+            isDead = true;
+            StartCoroutine(HunterDeath());
+        }
     }
 
     IEnumerator HunterDeath()
@@ -183,7 +188,8 @@ public class BulletShooter : MonoBehaviour
             yield return new WaitForSeconds(0.005f);
         }
         yield return new WaitForSeconds(.5f);
-        SceneManager.LoadScene("Win Screen");
+
+        hunterManager.GetComponent<HunterManager>().ReportDeath();
     }
 
     bool CanSeeTarget()
