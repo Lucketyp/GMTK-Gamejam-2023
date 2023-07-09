@@ -68,7 +68,7 @@ public class WorldLoader : MonoBehaviour
 
     [SerializeField] GameObject hunter;
     [SerializeField] GameObject player;
-    [SerializeField] Vector3 hunterPlayer;
+    [SerializeField] Vector2 hunterPlayer;
     [SerializeField] GameObject playerCamera;
     [SerializeField] float avoidSpawnRadius;
 
@@ -88,8 +88,12 @@ public class WorldLoader : MonoBehaviour
         currentPlayer = Instantiate(player, transform.position + Vector3.up, Quaternion.identity);
         playerCamera.transform.SetParent(currentPlayer.transform);
         currentPlayer.GetComponent<PlayerMovement>().relativeTo = playerCamera.transform;
-
-        currentHunter = Instantiate(hunter, currentPlayer.transform.position + hunterPlayer, Quaternion.identity);
+        
+        Vector3 hunterPosition = currentPlayer.transform.position;
+        hunterPosition.x += hunterPlayer.x;
+        hunterPosition.y = 0;
+        hunterPosition.z += hunterPlayer.y;
+        currentHunter = Instantiate(hunter, hunterPosition, Quaternion.identity);
         currentHunter.GetComponent<BulletShooter>().target = currentPlayer;
 
         avoidObjects = new GameObject[2]{currentPlayer, currentHunter};

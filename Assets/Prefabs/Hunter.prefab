@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  bullet: {fileID: 5109141495428001968, guid: de9ddc67a7e3db04aaf7eed4e36b17b1, type: 3}
+  bullet: {fileID: 5538606210951338087, guid: 1699076c6e80a634f9998c07a3c23f02, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 64

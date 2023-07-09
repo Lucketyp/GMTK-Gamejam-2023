@@ -160,7 +160,7 @@ MonoBehaviour:
     - {fileID: 4204847957599062539, guid: ea2301649ccbcbf4084397d980e19d71, type: 3}
     - {fileID: 4631823909344954961, guid: 8dad898322ef66e4cb2112ad8f9d5465, type: 3}
     - {fileID: 2556676087468091668, guid: 5968a4e0437f4e6449969c82570b9dc6, type: 3}
-    gridResolution: 2
+    gridResolution: 3
     perlinMultiplier: 0.05
     spawnProbability: 0.25
     typeDominance: 2
@@ -170,13 +170,13 @@ MonoBehaviour:
     - {fileID: 3145855732455777777, guid: baa3f2fc9b70d624391a89fd7f2dd2c8, type: 3}
     gridResolution: 1
     perlinMultiplier: 0.03
-    spawnProbability: 0.5
+    spawnProbability: 1
     typeDominance: 1
-  typeGridResolution: 5
+  typeGridResolution: 3
   typePerlinMultiplier: 0.03
   hunter: {fileID: 6592837934284942895, guid: 8ec30d8b4dce11f4d9d59309584c9d0a, type: 3}
   player: {fileID: 4496706744180438020, guid: f2e914ceb3e499849a24d227e53fb6a7, type: 3}
-  hunterPlayer: {x: 0, y: -0.5, z: 300}
+  hunterPlayer: {x: 0, y: 300}
   playerCamera: {fileID: 908273680}
   avoidSpawnRadius: 20
 --- !u!4 &55810257
