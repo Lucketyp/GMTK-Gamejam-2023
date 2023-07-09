@@ -8,6 +8,19 @@ public class AdaptiveAudio : MonoBehaviour
     [SerializeField] private AudioSource simpleDrums;
     [SerializeField] private AudioSource heartbeatDrums;
 
+    //Singeton
+    public static AdaptiveAudio Instance { get; private set; }
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        if (Instance == null) {
+            Instance = this;
+        } else {
+            Destroy(gameObject);
+        }
+    }
+
 
     void Update()
     {
