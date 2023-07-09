@@ -17,11 +17,14 @@ public class BulletShooter : MonoBehaviour
     [SerializeField] float moveSpeed = 4;
     [SerializeField] float fleeRange = 15; 
     [SerializeField] float shootAgainRange = 20; 
+    [SerializeField] float deathRange = 1f;
+
+    [SerializeField] GameObject HunterModel;
 
     float shootTime = 1f;
     float timer = 0f;
     int bulletsToFire = 1;
-    int behaviour;
+    [SerializeField] int behaviour;
     Animator animator;
 
     void Start()
@@ -30,18 +33,22 @@ public class BulletShooter : MonoBehaviour
     }
 
     void Update()
-    {            
-        behaviour = checkDistance();
-        Behaviour(behaviour);
+    {          
+        if(behaviour != 2) {
+            behaviour = checkDistance();
+            Behaviour(behaviour);
+        }
     }
 
     int checkDistance() {
         Vector3 difference = target.transform.position - spawnOffset.position;
         difference.y = 0;
         float distance = difference.magnitude;
-        if(distance < fleeRange){
+        if(distance < deathRange){
+            return 2;
+        } else if(distance < fleeRange){
             return 1;
-        } else if(distance >= shootAgainRange){
+        } else if(distance > shootAgainRange){
             return 0;
         }
         return behaviour;
@@ -54,6 +61,9 @@ public class BulletShooter : MonoBehaviour
                 break;
             case 1:
                 RunBehaviour();
+                break;
+            case 2:
+                DeathBehaviour();
                 break;
             default:
                 break;
@@ -80,6 +90,21 @@ public class BulletShooter : MonoBehaviour
                 shootTime = Random.Range(0, 1000) / 1000 * (maxTimeBetweenRounds - minTimeBetweenRounds) + minTimeBetweenRounds;
             }
         }
+    }
+
+    void DeathBehaviour(){
+        Debug.Log("Hunter Death");
+        StartCoroutine(HunterDeath());
+    }
+
+    IEnumerator HunterDeath(){
+        GetComponentInChildren<Renderer>().material.color = Color.red;
+        for(int i = 0; i < 90; i++){
+            transform.Rotate(0, 0, 1);
+            transform.position += new Vector3(0, 0.01f, 0);
+            yield return new WaitForSeconds(0.01f);
+        }
+        yield return new WaitForSeconds(2f);
     }
 
     bool CanSeeTarget() {
